@@ -48,7 +48,7 @@ const image1 = document.querySelector('.image1')
 
 
 for (let i=0;i<fragrances.length; i++) {
-    perfumes.innerText = perfumes.innerText + ` ${fragrances[i].name} |`
+    perfumes.innerText = perfumes.innerText + ` ${fragrances[i].name} ,`
 }
 
 
@@ -61,12 +61,19 @@ pickBtn.addEventListener('click', (e) => {
 
 submitBtn.addEventListener('click', e => {
     e.preventDefault()
-    if(box.value !== '') {
-        fragrances.push({name: box.value, img: "https://media.istockphoto.com/vectors/no-image-available-sign-vector-id922962354?k=6&m=922962354&s=612x612&w=0&h=_KKNzEwxMkutv-DtQ4f54yA5nc39Ojb_KPvoV__aHyU="})
+    if(box.value !== '' && box.value !== ' ') {
+        fragrances.push({
+            name: box.value,
+            img: "https://media.istockphoto.com/vectors/no-image-available-sign-vector-id922962354?k=6&m=922962354&s=612x612&w=0&h=_KKNzEwxMkutv-DtQ4f54yA5nc39Ojb_KPvoV__aHyU="
+        })
         console.log(fragrances)
-        perfumes.innerText += ` ${box.value} |`
+        perfumes.innerText += ` ${box.value} ,`
         form1.reset()
     } else {
-        alert1.classList.remove('invisible')
+       
+        alert1.classList.replace('invisible', 'visible')
+        setTimeout(() => {
+            alert1.classList.replace('visible', 'invisible')
+        }, 5000);
     }
 })
