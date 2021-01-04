@@ -43,10 +43,11 @@ const showBtn = document.querySelector('.show-button')
 
 function showAll() {
     for (let i=0;i<fragrances.length; i++) {
-        perfumes.innerText = perfumes.innerText + ` ${fragrances[i].name} ,`
+        perfumes.innerText += ` ${fragrances[i].name},`
         showBtn.innerText = 'Click to hide the list of perfumes'
     }
 }
+
 function hideAll() {
     perfumes.innerText = ''
     showBtn.innerText = 'Click to show the list of perfumes'
@@ -72,10 +73,10 @@ submitBtn.addEventListener('click', e => {
     e.preventDefault()
     if(box.value !== '' && box.value !== ' ') {
         fragrances.push({
-            name: box.value,
+            name: `, ${box.value}`,
             img: "https://media.istockphoto.com/vectors/no-image-available-sign-vector-id922962354?k=6&m=922962354&s=612x612&w=0&h=_KKNzEwxMkutv-DtQ4f54yA5nc39Ojb_KPvoV__aHyU="
         })
-        perfumes.innerText += ` ${box.value} ,`
+        perfumes.innerText += ` ${box.value} `
         form1.reset()
     } else {
         alert1.classList.replace('invisible', 'visible')
