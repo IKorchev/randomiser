@@ -35,24 +35,33 @@ const perfumes = document.querySelector('.perfumes')
 const alert1 = document.querySelector('.alert')
 const box = document.querySelector('.box')
 const submitBtn = document.querySelector('.submit')
-const pickBtn = document.querySelector('.btn')
+const pickBtn = document.querySelector('.pick-button')
 const form1 = document.querySelector('.form1')
 const image1 = document.querySelector('.image1')
+const showBtn = document.querySelector('.show-button')
 
 
-// for(let i=0;i<fragrances.length;i++){
-//     // console.log(fragrances[i].name)
-//     perfumes.innerText = perfumes.innerText + ` ${fragrances[i].name},`
-// }
-
-
-
-for (let i=0;i<fragrances.length; i++) {
-    perfumes.innerText = perfumes.innerText + ` ${fragrances[i].name} ,`
+function showAll() {
+    for (let i=0;i<fragrances.length; i++) {
+        perfumes.innerText = perfumes.innerText + ` ${fragrances[i].name} ,`
+        showBtn.innerText = 'Click to hide the list of perfumes'
+    }
+}
+function hideAll() {
+    perfumes.innerText = ''
+    showBtn.innerText = 'Click to show the list of perfumes'
 }
 
+showBtn.addEventListener('click', (e)=> {
+    e.preventDefault()
+    if (perfumes.innerText == '') {
+        showAll()
+    } else {
+        hideAll()
+    }
+})
 
-pickBtn.addEventListener('click', (e) => {
+pickBtn.addEventListener('click', e => {
     e.preventDefault();
     let randomFrag = fragrances[Math.floor(Math.random() * fragrances.length)]
     output.innerText = randomFrag.name
@@ -66,14 +75,16 @@ submitBtn.addEventListener('click', e => {
             name: box.value,
             img: "https://media.istockphoto.com/vectors/no-image-available-sign-vector-id922962354?k=6&m=922962354&s=612x612&w=0&h=_KKNzEwxMkutv-DtQ4f54yA5nc39Ojb_KPvoV__aHyU="
         })
-        console.log(fragrances)
         perfumes.innerText += ` ${box.value} ,`
         form1.reset()
     } else {
-       
         alert1.classList.replace('invisible', 'visible')
         setTimeout(() => {
             alert1.classList.replace('visible', 'invisible')
-        }, 5000);
+        }, 4000);
     }
+    hideAll()
 })
+
+
+
