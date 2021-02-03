@@ -3,15 +3,13 @@ const output = document.querySelector(".output")
 const perfumes = document.querySelector(".perfumes")
 const alert1 = document.querySelector(".alert")
 const box = document.querySelector(".box")
-const submitBtn = document.querySelector(".submit")
 const pickBtn = document.querySelector(".pick-button")
-const form1 = document.querySelector(".form1")
 const image1 = document.querySelector(".image1")
 const showBtn = document.querySelector(".show-button")
+
 const imageUrl =
   "https://media.istockphoto.com/vectors/no-image-available-sign-vector-id922962354?k=6&m=922962354&s=612x612&w=0&h=_KKNzEwxMkutv-DtQ4f54yA5nc39Ojb_KPvoV__aHyU="
 const arr = []
-
 // Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyCC_MQl3-dk3_1NfN4_jnrGHChXpyjV9Qw",
@@ -31,18 +29,22 @@ const randomInt = (num) => {
   return randomNum
 }
 
+// OUTPUT THE DATA IN THE DOM
 const checkQuery = async (frag) => {
-  output.innerHTML = frag.name
-  image1.src = await frag.img
-
+  if (frag.img !== undefined) {
+    output.innerHTML = frag.name
+    image1.src = await frag.img
+  }
 }
 
-const showFrags = () => {
+// GETTING DATA FROM FIREBASE
+const showFrags = (() => {
   frags.get().then((query) => {
     query.forEach((doc) => (perfumes.innerHTML += `<li class="list-group-item"> ${doc.data().name}</li>`))
   })
-}
+})()
 
+// GETTING RANDOM PERFUME FROM DATABASE
 const displayData = () => {
   frags.get().then((query) => {
     query.forEach((doc) => arr.push(doc.data()))
@@ -51,14 +53,12 @@ const displayData = () => {
   })
 }
 
-// EVENT LISTENERS
-showBtn.addEventListener("click", (e) => {
+// SHOW THE LIST
+const displayList = (e) => {
   e.preventDefault()
-  showFrags()
   perfumes.classList.toggle("display-none")
-})
+}
 
-pickBtn.addEventListener("click", async (e) => {
-  e.preventDefault()
-  displayData()
-})
+// EVENT LISTENERS
+showBtn.addEventListener("click", displayList)
+pickBtn.addEventListener("click", displayData)
