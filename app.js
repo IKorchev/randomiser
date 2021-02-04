@@ -6,6 +6,8 @@ const box = document.querySelector(".box")
 const pickBtn = document.querySelector(".pick-button")
 const image1 = document.querySelector(".image1")
 const showBtn = document.querySelector(".show-button")
+const loggedInBtn = document.querySelectorAll(".logged-in")
+const loggedOutBtn = document.querySelectorAll(".logged-out")
 
 const imageUrl =
   "https://media.istockphoto.com/vectors/no-image-available-sign-vector-id922962354?k=6&m=922962354&s=612x612&w=0&h=_KKNzEwxMkutv-DtQ4f54yA5nc39Ojb_KPvoV__aHyU="
@@ -57,6 +59,24 @@ const displayData = () => {
 const displayList = (e) => {
   e.preventDefault()
   perfumes.classList.toggle("display-none")
+}
+
+const setupUI = (user) => {
+  if (user) {
+    loggedOutBtn.forEach((item) => {
+      item.style.display = "none"
+    })
+    loggedInBtn.forEach((item) => {
+      item.style.display = "block"
+    })
+  } else {
+    loggedInBtn.forEach((item) => {
+      item.style.display = "none"
+    })
+    loggedOutBtn.forEach((item) => {
+      item.style.display = "block"
+    })
+  }
 }
 
 // EVENT LISTENERS

@@ -9,10 +9,15 @@
     <title>Document</title>
 </head>
 <body className="container">
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</button>
-      
-      <!-- Modal -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="d-flex flex-row justify-content-end">
+    <button type="button" class="btn btn-primary my-2 logged-out mx-2 display-none" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+    <button class="logout btn btn-primary my-2 logged-in mx-2 display-none">Log out</button>
+    <button type="button" class="btn btn-primary my-2 logged-out mx-2 display-none" data-bs-toggle="modal" data-bs-target="#registerModal">
+      Register
+    </button>
+  </div>
+      <!-- Log in Modal -->
+      <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content text-center">
             <div class="modal-header">
@@ -31,12 +36,8 @@
           </div>
         </div>
       </div>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Register
-      </button>
-      
-      <!-- Modal -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <!-- Register Modal -->
+      <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
               <div class="modal-header mx-3">
@@ -59,9 +60,6 @@
           </div>
         </div>
       </div>
-
-
-    <button class="logout btn btn-primary">Log out</button>
     <div class="mt-5 container text-center">
         <div class="container w-50 pt-3">
             <h3 class="h3 my-2 p-2 shadow-lg bg-secondary text-light rounded" >Fragrance Picker</h3>

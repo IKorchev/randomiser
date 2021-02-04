@@ -9,17 +9,19 @@ const auth = firebase.auth()
 auth.onAuthStateChanged((user) => {
   if (user) {
     console.log(user.uid)
+    setupUI(user)
   } else {
     console.log("not signed in yet")
+    setupUI()
   }
 })
 
-const logUserOut = (e) => {
-  e.preventDefault()
+const logUserOut = () => {
   auth
     .signOut()
-    .then(() => console.log("Log out successful"))
+    .then(() => console.log("user logged out"))
     .catch((err) => console.log(err))
+  window.location.reload()
 }
 
 const logUserIn = (e) => {
@@ -29,7 +31,9 @@ const logUserIn = (e) => {
 
   auth
     .signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {})
+    .then((userCredential) => {
+      window.location.reload()
+    })
     .catch((error) => {
       console.log(error.message)
     })
@@ -49,6 +53,7 @@ const createUser = (e) => {
           alert.innerHTML = `<h6 class="alert-success p-3"> You have been registered. </h6>`
           console.log(user)
           registerForm.reset()
+          window.location.reload()
         })
         .catch((error) => {
           alert.innerHTML = `<h6 class="alert-warning p-3">${error.message}</h6>`
