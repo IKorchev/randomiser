@@ -31,7 +31,7 @@ const logUserIn = (e) => {
 
   auth
     .signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
+    .then((cred) => {
       window.location.reload()
     })
     .catch((error) => {
@@ -44,21 +44,22 @@ const createUser = (e) => {
   const email = document.querySelector("#email").value
   const password = document.querySelector("#password").value
   const confirmPassword = document.querySelector("#confirmPassword").value
-  password !== confirmPassword
-    ? (alert.innerHTML = `<h6 class="alert-warning p-3"> Make sure your passwords match! </h6>`)
-    : auth
-        .createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          var user = userCredential.user
-          alert.innerHTML = `<h6 class="alert-success p-3"> You have been registered. </h6>`
-          console.log(user)
-          registerForm.reset()
+  if (password !== confirmPassword) {
+    alert.innerHTML = `<h6 class="alert-warning p-3"> Make sure your passwords match! </h6>`
+  } else {
+    auth.createUserWithEmailAndPassword(email, password).then((userCredential) => {
+      const user = userCredential.user
+      const docData = {
+        perfumes: [],
+      }
+      return usersCollection
+        .doc(user.uid)
+        .set(docData)
+        .then(() => {
           window.location.reload()
         })
-        .catch((error) => {
-          alert.innerHTML = `<h6 class="alert-warning p-3">${error.message}</h6>`
-          console.log(error)
-        })
+    })
+  }
 }
 
 logoutButton.addEventListener("click", logUserOut)

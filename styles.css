@@ -1,12 +1,16 @@
-.output { 
-    color: rgb(255, 0, 0);
+.output {
+  color: rgb(255, 0, 0);
 }
 
-.perfumes{
-    color: rgb(0, 0, 0);
-
+.perfumes {
+  color: rgb(0, 0, 0);
 }
 
 .display-none {
-    display:none;
+  display: none;
+}
+
+.searchImage {
+  width: 500px;
+  height: auto;
 }
