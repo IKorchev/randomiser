@@ -11,8 +11,16 @@ const loggedOutBtn = document.querySelectorAll(".logged-out")
 const searchInput = document.querySelector(".searchInput")
 const searchForm = document.querySelector(".searchForm")
 const searchImage = document.querySelector(".searchImage")
-const myModal = new bootstrap.Modal(document.getElementById("searchModal"))
-let searchImageURL
+const searchAlert = document.querySelector(".searchAlert")
+const inCollectionAlert = document.querySelector(".inCollectionAlert")
+const addedAlert = document.querySelector(".addedAlert")
+
+let arrayOfData = []
+const searchResult = {
+  image_url: "",
+  name: "",
+}
+
 // Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyCC_MQl3-dk3_1NfN4_jnrGHChXpyjV9Qw",
@@ -27,31 +35,70 @@ firebase.initializeApp(firebaseConfig)
 const store = firebase.firestore()
 const usersCollection = store.collection("USERS")
 
+// Create random number
+
 const randomInt = (num) => {
   let randomNum = Math.floor(Math.random() * num)
   return randomNum
 }
 
+// prettier-ignore
+
+const capitalize = (str) => str.toLowerCase().split(" ").map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(" ")
+
 const searchFormSubmitHandler = async (e) => {
   e.preventDefault()
-  try {
-    const response = await fetch(
-      `https://api.bing.microsoft.com/v7.0/images/search?q=${searchInput.value}`,
-      {
-        headers: {
-          "Ocp-Apim-Subscription-Key": BING_API_KEY,
-        },
-      }
-    )
-    const data = await response.json()
-    searchImageURL = data.value[0].contentUrl
-    searchImage.src = searchImageURL
-  } catch (err) {
-    console.log(err)
+  addedAlert.classList.add("display-none")
+  const response = await fetch(
+    `https://api.bing.microsoft.com/v7.0/images/search?q=${searchInput.value}`,
+    {
+      headers: {
+        "Ocp-Apim-Subscription-Key": BING_API_KEY,
+      },
+    }
+  )
+  const data = await response.json()
+
+  // MAKING SURE THE USER SEARCHED FOR
+  // A PERFUME OR SOMETHING RELATED
+
+  data.value.forEach((item) => {
+    if (
+      item.contentUrl.includes("perfume") ||
+      item.contentUrl.includes("parfum") ||
+      item.contentUrl.includes("fragrance")
+    ) {
+      arrayOfData.push(item.contentUrl)
+    } else {
+      return
+    }
+  })
+  if (arrayOfData.length > 0) {
+    searchAlert.classList.add("display-none")
+    searchResult.image_url = arrayOfData[0]
+    searchResult.name = searchInput.value
+    searchImage.src = searchResult.image_url
+    console.log(searchResult)
+  } else {
+    searchAlert.classList.remove("display-none")
+    searchImage.src = ""
   }
+
+  inCollectionAlert.classList.add("display-none")
+  searchForm.reset()
+  arrayOfData = []
 }
 
-// OUTPUT THE DATA IN THE DOM
+const checkExists = (arr) => {
+  let exists = false
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].name === searchResult.name) {
+      exists = true
+    }
+  }
+  return exists
+}
+// CHOOSE RANDOM ITEM FROM ARRAY AND OUTPUT THE DATA IN THE DOM
 const outputQueryData = (e) => {
   e.preventDefault()
   auth.onAuthStateChanged(async (user) => {
@@ -59,7 +106,7 @@ const outputQueryData = (e) => {
       const doc = await usersCollection.doc(user.uid).get()
       const perfumeList = await doc.data().perfumes
       const randomFrag = perfumeList[randomInt(perfumeList.length)]
-      output.innerHTML = randomFrag.name
+      output.innerHTML = capitalize(randomFrag.name)
       image1.src = randomFrag.image_url
     } else {
       return
@@ -67,55 +114,45 @@ const outputQueryData = (e) => {
   })
 }
 
-const getImageURL = (array, name) => {
-  array.forEach((element) => {
-    let url
-    if (element.name !== name) {
-      console.log("didnt find matching names")
-    } else {
-      url = element.image_url
-    }
-    return url
-  })
-}
-
+// ADD WHATEVER USER SEARCHED FOR TO THEIR COLLECTION
 const addPerfumeToCollection = (e) => {
   e.preventDefault()
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      const data = {
-        name: searchInput.value,
-        image_url: searchImageURL,
-      }
+  auth.onAuthStateChanged(async (user) => {
+    const response = await usersCollection.doc(user.uid).get()
+    const array = response.data().perfumes
+
+    console.log(checkExists(array))
+    if (user && searchResult.name !== "" && !checkExists(array)) {
       usersCollection.doc(user.uid).update({
-        perfumes: firebase.firestore.FieldValue.arrayUnion(data),
+        perfumes: firebase.firestore.FieldValue.arrayUnion(searchResult),
       })
+      searchImage.src = ""
+      addedAlert.classList.remove("display-none")
     } else {
-      return
+      inCollectionAlert.classList.remove("display-none")
     }
   })
 }
+// DELETE THE ITEM FROM COLLECTION
 const deletePerfumeFromCollection = () => {
+  event.preventDefault()
   auth.onAuthStateChanged(async (user) => {
-    const targetName = event.target.parentNode.textContent.slice(0, -1)
+    const targetName = event.target.parentNode.parentNode.childNodes[1].textContent.toLowerCase()
     const snapshot = await usersCollection.doc(user.uid).get()
     const data = snapshot.data().perfumes
-    let imageURL
     data.forEach((element) => {
       if (element.name === targetName) {
-        imageURL = element.image_url
+        let object = {
+          image_url: element.image_url,
+          name: element.name,
+        }
+        usersCollection.doc(user.uid).update({
+          perfumes: firebase.firestore.FieldValue.arrayRemove(object),
+        })
+      } else {
+        return
       }
     })
-    let object = {
-      image_url: imageURL,
-      name: targetName,
-    }
-    console.log(object)
-    if (user) {
-      usersCollection.doc(user.uid).update({
-        perfumes: firebase.firestore.FieldValue.arrayRemove(object),
-      })
-    }
   })
 }
 
@@ -132,18 +169,31 @@ const displayList = (e) => {
         let html = ""
         if (perfumeList.length > 0) {
           for (let i = 0; i < perfumeList.length; i++) {
-            html += `<li class="list-group-item">${perfumeList[i].name}<button class="close delete-button" onclick="deletePerfumeFromCollection()">&times;</button></li>`
+            // prettier-ignore
+            html += `
+            <div class="card m-2 px-0 d-flex justify-content-between" style="height:100px; width:auto;">
+              <div class="row g-0 ">
+                <div class="col-auto d-flex justify-content-start align-items-center">
+                  <img src="${perfumeList[i].image_url}" style="height:95px; width:auto;" alt="...">
+                </div>
+                <div class="col-auto d-flex justify-content-end align-items-center">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 mx-2">${capitalize(perfumeList[i].name)}</h6>
+                    <button type="button" class="mx-2 btn bg-danger px-1 py-0" onClick="deletePerfumeFromCollection()"><i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>`
           }
           perfumes.innerHTML = html
         } else {
-          perfumes.innerHTML = `<h5>Your list is empty please add items to your collection</h5>`
+          perfumes.innerHTML = `<h3 class="w-50">Your list is empty please add items to your collection</h3>`
         }
       })
     }
   })
 }
-
-const getPerfumeListFromUser = (user) => {}
 
 const setupUI = (user) => {
   if (user) {
