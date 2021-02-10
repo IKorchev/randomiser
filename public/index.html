@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@900&display=swap" rel="stylesheet">
   <title>Random fragrance picker</title>
 </head>
-<body>
+<body class="font-monospace">
   <nav>
     <div class="d-flex flex-row justify-content-between">
       <button type="button" class="btn btn-light border border-dark rounded-pill my-2 logged-in mx-2 display-none" data-bs-toggle="modal" data-bs-target="#searchModal">Search <i class="bi bi-search"></i></button>
@@ -108,13 +108,13 @@
     </div>
   </div>
   <main class="container text-center d-flex flex-column justify-content-center align-items-center main-content logged-in">
-    <h3 class="h3 w-25 p-2 text-dark rounded" >Fragrance Picker</h3>
+    <h1 class="display-3 mt-5 text-dark rounded fw-bold" >Fragrance Picker</h1>
     <div class="row pt-5 d-flex justify-content-center align-items-center">
         <div class="col-sm img-div" style="height: 20rem;">
-            <img class="img smaller-image img-responsive mx-auto image1" src="https://whataftercollege.com/wp-content/uploads/2019/12/wac-down-arrow-gif-2.gif" style='height: 100%; width: 100%; object-fit: contain'></img>
+            <img class="mx-auto image1" src="https://whataftercollege.com/wp-content/uploads/2019/12/wac-down-arrow-gif-2.gif" style='height: 100%; width: 100%; object-fit: contain'></img>
         </div>
     </div>
-      <div class="output"></div>
+      <div class="output mt-3"></div>
       <button class="btn btn-secondary btn-md my-3 pick-button">Pick fragrance</button><br>
       <button class="btn btn-secondary btn-md mb-4 show-button"><i class="bi bi-collection"></i> Collection</button>
       <div class="container perfumes display-none row align-items-center justify-content-center mb-5"></div>

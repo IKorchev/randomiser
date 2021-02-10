@@ -116,13 +116,13 @@ const outputQueryData = (e) => {
         for (const item of perfumeList) {
           if (item.name === randomFrag.name) {
             // prettier-ignore
-            output.innerHTML = `<h1 class="text-warning display-4 fw-bold W-25"> ${capitalize(item.name)} </h1>`
+            output.innerHTML = `<h1 class="display-6 fw-bolder p-3 text-decoration-underline border border-2 rounded border-dark"> ${capitalize(item.name)} </h1>`
             image1.src = randomFrag.image_url
             return
           } else {
             await sleep(130)
             image1.src = item.image_url
-            output.innerHTML = `<h6> ${capitalize(item.name)} </h6>`
+            output.innerHTML = `<h5 m-3> ${capitalize(item.name)} </h5>`
           }
         }
       }
@@ -194,10 +194,10 @@ const displayList = (e) => {
           for (let i = 0; i < perfumeList.length; i++) {
             // prettier-ignore
             html += `
-            <div class="card m-2 px-0 d-flex justify-content-between" style="height:100px; width:auto;">
+            <div class="card border border-2 border-dark m-2 px-0 d-flex justify-content-between" style="height:100px; width:auto;">
               <div class="row g-0 ">
-                <div class="col-auto ms-2 d-flex justify-content-start align-items-center">
-                  <img src="${perfumeList[i].image_url}" style="height:90px; width:auto;" alt="...">
+                <div class="col-auto ms-2 mt-2 d-flex justify-content-start align-items-center">
+                  <img src="${perfumeList[i].image_url}" style="height:80px; width:auto;" alt="...">
                 </div>
                 <div class="col-auto d-flex justify-content-end align-items-center">
                   <div class="d-flex justify-content-between align-items-center">
