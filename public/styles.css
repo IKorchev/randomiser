@@ -13,8 +13,29 @@
   height: auto;
 }
 
+.register-span:hover {
+  color:rgb(255, 174, 0);
+}
+
+.main-logged-out {
+  margin-top: 3rem;
+  width: 100vw;
+  height: 500px;
+  background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url(../assets/1.png);
+  background-position: center center;
+  background-size:contain;
+  background-repeat: no-repeat;
+}
+
 @media only screen and (max-width: 900px) {
   .card-title {
     font-size: 0.8rem;
+  }
+  .main-logged-out {
+    margin-top: 100px;
+    width: 100vw;
+    height: 300px;
+    background-position-y:50%;
+
   }
 }

@@ -116,7 +116,7 @@ const outputQueryData = (e) => {
         for (const item of perfumeList) {
           if (item.name === randomFrag.name) {
             // prettier-ignore
-            output.innerHTML = `<h1 class="display-6 fw-bolder p-3 text-decoration-underline border border-2 rounded border-dark"> ${capitalize(item.name)} </h1>`
+            output.innerHTML = `<h1 class="display-6 fw-bolder p-3 border border-5 rounded border-success"> ${capitalize(item.name)} </h1>`
             image1.src = randomFrag.image_url
             return
           } else {
