@@ -73,21 +73,23 @@ const searchFormSubmitHandler = async (e) => {
       return
     }
   })
+  // IF THERE IS ANY RESULT
   if (arrayOfData.length > 0) {
     searchAlert.classList.add("display-none")
     searchResult.image_url = arrayOfData[0]
     searchResult.name = searchInput.value
     searchImage.src = searchResult.image_url
-    console.log(searchResult)
   } else {
+    // IN CASE NO RESULT
     searchAlert.classList.remove("display-none")
     searchImage.src = ""
   }
-
   inCollectionAlert.classList.add("display-none")
   searchForm.reset()
   arrayOfData = []
 }
+
+// CHECK IF THE ITEM THEY TRY TO ADD ALREADY EXISTS IN THE USER'S DATABASE
 
 const checkExists = (arr) => {
   let exists = false
@@ -98,7 +100,8 @@ const checkExists = (arr) => {
   }
   return exists
 }
-// CHOOSE RANDOM ITEM FROM ARRAY AND OUTPUT THE DATA IN THE DOM
+
+// CHOOSE RANDOM ITEM FROM DB AND OUTPUT THE DATA IN THE DOM
 const outputQueryData = (e) => {
   e.preventDefault()
   auth.onAuthStateChanged(async (user) => {
@@ -106,8 +109,24 @@ const outputQueryData = (e) => {
       const doc = await usersCollection.doc(user.uid).get()
       const perfumeList = await doc.data().perfumes
       const randomFrag = perfumeList[randomInt(perfumeList.length)]
-      output.innerHTML = capitalize(randomFrag.name)
-      image1.src = randomFrag.image_url
+      const sleep = (milliseconds) => {
+        return new Promise((resolve) => setTimeout(resolve, milliseconds))
+      }
+      const goOverAndStop = async () => {
+        for (const item of perfumeList) {
+          if (item.name === randomFrag.name) {
+            // prettier-ignore
+            output.innerHTML = `<h1 class="text-warning display-4 fw-bold W-25"> ${capitalize(item.name)} </h1>`
+            image1.src = randomFrag.image_url
+            return
+          } else {
+            await sleep(130)
+            image1.src = item.image_url
+            output.innerHTML = `<h6> ${capitalize(item.name)} </h6>`
+          }
+        }
+      }
+      goOverAndStop()
     } else {
       return
     }
@@ -115,6 +134,7 @@ const outputQueryData = (e) => {
 }
 
 // ADD WHATEVER USER SEARCHED FOR TO THEIR COLLECTION
+
 const addPerfumeToCollection = (e) => {
   e.preventDefault()
   auth.onAuthStateChanged(async (user) => {
@@ -133,13 +153,15 @@ const addPerfumeToCollection = (e) => {
     }
   })
 }
+
 // DELETE THE ITEM FROM COLLECTION
+
 const deletePerfumeFromCollection = () => {
   event.preventDefault()
   auth.onAuthStateChanged(async (user) => {
     const targetName = event.target.parentNode.parentNode.childNodes[1].textContent.toLowerCase()
-    const snapshot = await usersCollection.doc(user.uid).get()
-    const data = snapshot.data().perfumes
+    const collection = await usersCollection.doc(user.uid).get()
+    const data = collection.data().perfumes
     data.forEach((element) => {
       if (element.name === targetName) {
         let object = {
@@ -157,6 +179,7 @@ const deletePerfumeFromCollection = () => {
 }
 
 // SHOW THE LIST
+
 const displayList = (e) => {
   e.preventDefault()
   perfumes.classList.toggle("display-none")
@@ -173,12 +196,12 @@ const displayList = (e) => {
             html += `
             <div class="card m-2 px-0 d-flex justify-content-between" style="height:100px; width:auto;">
               <div class="row g-0 ">
-                <div class="col-auto d-flex justify-content-start align-items-center">
-                  <img src="${perfumeList[i].image_url}" style="height:95px; width:auto;" alt="...">
+                <div class="col-auto ms-2 d-flex justify-content-start align-items-center">
+                  <img src="${perfumeList[i].image_url}" style="height:90px; width:auto;" alt="...">
                 </div>
                 <div class="col-auto d-flex justify-content-end align-items-center">
                   <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 mx-2">${capitalize(perfumeList[i].name)}</h6>
+                    <h5 class="mb-0 mx-2 card-title">${capitalize(perfumeList[i].name)}</h5>
                     <button type="button" class="mx-2 btn bg-danger px-1 py-0" onClick="deletePerfumeFromCollection()"><i class="bi bi-trash"></i>
                     </button>
                   </div>
@@ -198,17 +221,17 @@ const displayList = (e) => {
 const setupUI = (user) => {
   if (user) {
     loggedOutBtn.forEach((item) => {
-      item.style.display = "none"
+      item.classList.add("display-none")
     })
     loggedInBtn.forEach((item) => {
-      item.style.display = "block"
+      item.classList.remove("display-none")
     })
   } else {
     loggedInBtn.forEach((item) => {
-      item.style.display = "none"
+      item.classList.add("display-none")
     })
     loggedOutBtn.forEach((item) => {
-      item.style.display = "block"
+      item.classList.remove("display-none")
     })
   }
 }

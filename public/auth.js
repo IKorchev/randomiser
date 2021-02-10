@@ -2,7 +2,7 @@ const registerForm = document.querySelector(".registerForm")
 const loginForm = document.querySelector(".loginForm")
 const formContainer = document.querySelector(".formContainer")
 const logoutButton = document.querySelector(".logout")
-const alert = document.querySelector(".alert")
+const loginAlert = document.querySelector('.loginAlert')
 const modal = document.querySelector(".modal")
 const auth = firebase.auth()
 
@@ -35,7 +35,7 @@ const logUserIn = (e) => {
       window.location.reload()
     })
     .catch((error) => {
-      console.log(error.message)
+      loginAlert.classList.remove('display-none')
     })
 }
 
