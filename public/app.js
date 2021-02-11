@@ -120,7 +120,7 @@ const outputQueryData = (e) => {
             image1.src = randomFrag.image_url
             return
           } else {
-            await sleep(130)
+            await sleep(110)
             image1.src = item.image_url
             output.innerHTML = `<h5 m-3> ${capitalize(item.name)} </h5>`
           }
@@ -195,16 +195,13 @@ const displayList = (e) => {
             // prettier-ignore
             html += `
             <div class="card border border-2 border-dark m-2 px-0 d-flex justify-content-between" style="height:100px; width:auto;">
-              <div class="row g-0 ">
+              <div class="row g-0 d-flex align-items-center">
                 <div class="col-auto ms-2 mt-2 d-flex justify-content-start align-items-center">
                   <img src="${perfumeList[i].image_url}" style="height:80px; width:auto;" alt="...">
                 </div>
-                <div class="col-auto d-flex justify-content-end align-items-center">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0 mx-2 card-title">${capitalize(perfumeList[i].name)}</h5>
-                    <button type="button" class="mx-2 btn bg-danger px-1 py-0" onClick="deletePerfumeFromCollection()"><i class="bi bi-trash"></i>
-                    </button>
-                  </div>
+                <div class="col d-flex justify-content-end align-items-center mt-1 ms-2">
+                    <h5 class="text-center mx-1 my-0 frag-title">${capitalize(perfumeList[i].name)}</h5>
+                    <button type="button" class="mx-1 p-1 btn text-danger" onClick="deletePerfumeFromCollection()"><i class="bi bi-trash"></i></button>
                 </div>
               </div>
             </div>`
