@@ -55,7 +55,6 @@ const searchFormSubmitHandler = async (e) => {
   const response = await fetch(`search/${name}`)
   const data = await response.json()
 
-  console.log(data)
   // MAKING SURE THE USER SEARCHED FOR
   // A PERFUME OR SOMETHING RELATED
 
@@ -142,8 +141,6 @@ const addPerfumeToCollection = (e) => {
   auth.onAuthStateChanged(async (user) => {
     const response = await usersCollection.doc(user.uid).get()
     const array = response.data().perfumes
-
-    console.log(checkExists(array))
     if (user && searchResult.name !== "" && !checkExists(array)) {
       usersCollection.doc(user.uid).update({
         perfumes: firebase.firestore.FieldValue.arrayUnion(searchResult),
