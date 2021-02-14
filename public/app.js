@@ -1,4 +1,4 @@
-const BING_API_KEY = "3d02b295e14a4051b3ae9c0a025ca460"
+const SEARCH_URL = "https://api.bing.microsoft.com/v7.0/images/search?q="
 //  SELECTORS
 const output = document.querySelector(".output")
 const perfumes = document.querySelector(".perfumes")
@@ -14,7 +14,6 @@ const searchImage = document.querySelector(".searchImage")
 const searchAlert = document.querySelector(".searchAlert")
 const inCollectionAlert = document.querySelector(".inCollectionAlert")
 const addedAlert = document.querySelector(".addedAlert")
-
 let arrayOfData = []
 const searchResult = {
   image_url: "",
@@ -49,14 +48,11 @@ const capitalize = (str) => str.toLowerCase().split(" ").map((s) => s.charAt(0).
 const searchFormSubmitHandler = async (e) => {
   e.preventDefault()
   addedAlert.classList.add("display-none")
-  const response = await fetch(
-    `https://api.bing.microsoft.com/v7.0/images/search?q=${searchInput.value}`,
-    {
-      headers: {
-        "Ocp-Apim-Subscription-Key": BING_API_KEY,
-      },
-    }
-  )
+
+  // MAKE A CALL TO THE SERVER ( SERVER MAKES THE API REQUEST AND GIVES BACK DATA TO CLIENT )
+
+  const name = searchInput.value
+  const response = await fetch(`search/${name}`)
   const data = await response.json()
 
   // MAKING SURE THE USER SEARCHED FOR
@@ -76,6 +72,7 @@ const searchFormSubmitHandler = async (e) => {
   // IF THERE IS ANY RESULT
   if (arrayOfData.length > 0) {
     searchAlert.classList.add("display-none")
+    // GET THE FIRST IMAGE FROM THE ARRAY
     searchResult.image_url = arrayOfData[0]
     searchResult.name = searchInput.value
     searchImage.src = searchResult.image_url
@@ -109,9 +106,13 @@ const outputQueryData = (e) => {
       const doc = await usersCollection.doc(user.uid).get()
       const perfumeList = await doc.data().perfumes
       const randomFrag = perfumeList[randomInt(perfumeList.length)]
+
+      // MAKE A DELAY BETWEEN EACH ITTERATION OF THE LOOP SO EVERY IMAGE SHOWS FOR A BRIEF MOMENT FOR A UI EFFECT
+
       const sleep = (milliseconds) => {
         return new Promise((resolve) => setTimeout(resolve, milliseconds))
       }
+
       const goOverAndStop = async () => {
         for (const item of perfumeList) {
           if (item.name === randomFrag.name) {
@@ -234,7 +235,8 @@ const setupUI = (user) => {
 }
 
 // EVENT LISTENERS
-searchForm.addEventListener("submit", searchFormSubmitHandler)
+// searchForm.addEventListener("submit", searchFormSubmitHandler)
 showBtn.addEventListener("click", displayList)
+searchForm.addEventListener("submit", searchFormSubmitHandler)
 pickBtn.addEventListener("click", outputQueryData)
 addBtn.addEventListener("click", addPerfumeToCollection)
