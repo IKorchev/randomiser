@@ -4,8 +4,9 @@ const express = require("express")
 const fetch = require("node-fetch")
 const app = express()
 const BING_API_KEY = process.env.API_KEY
-const PORT = process.env.PORT || 3000
-const SEARCH_URL = 
+const PORT = process.env.PORT || 8080
+const SEARCH_URL = "https://api.bing.microsoft.com/v7.0/images/search?q="
+
 
 app.use(express.static(path.join(__dirname, "public")))
 

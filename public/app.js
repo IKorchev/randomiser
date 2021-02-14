@@ -1,4 +1,4 @@
-const SEARCH_URL = "https://api.bing.microsoft.com/v7.0/images/search?q="
+
 //  SELECTORS
 const output = document.querySelector(".output")
 const perfumes = document.querySelector(".perfumes")
@@ -55,6 +55,7 @@ const searchFormSubmitHandler = async (e) => {
   const response = await fetch(`search/${name}`)
   const data = await response.json()
 
+  console.log(data)
   // MAKING SURE THE USER SEARCHED FOR
   // A PERFUME OR SOMETHING RELATED
 
