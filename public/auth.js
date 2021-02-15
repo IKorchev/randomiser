@@ -2,16 +2,14 @@ const registerForm = document.querySelector(".registerForm")
 const loginForm = document.querySelector(".loginForm")
 const formContainer = document.querySelector(".formContainer")
 const logoutButton = document.querySelector(".logout")
-const loginAlert = document.querySelector('.loginAlert')
+const loginAlert = document.querySelector(".loginAlert")
 const modal = document.querySelector(".modal")
 const auth = firebase.auth()
 
 auth.onAuthStateChanged((user) => {
   if (user) {
-    console.log(user.uid)
     setupUI(user)
   } else {
-    console.log("not signed in yet")
     setupUI()
   }
 })
@@ -35,7 +33,7 @@ const logUserIn = (e) => {
       window.location.reload()
     })
     .catch((error) => {
-      loginAlert.classList.remove('display-none')
+      loginAlert.classList.remove("display-none")
     })
 }
 
