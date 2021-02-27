@@ -162,6 +162,7 @@ const setUserInfo = (user) => {
   if (user) {
     accountInfo.innerHTML = `
       <h1 class="h4"> Account details: </h1>
+      <h2 class="h6"> Name: ${user.displayName}</h2>
       <h2 class="h6"> Email: ${user.email} </h6>
     `
   } else {

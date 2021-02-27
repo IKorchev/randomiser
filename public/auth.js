@@ -5,6 +5,7 @@ auth.onAuthStateChanged((user) => {
     setupUI(user)
     setUserInfo(user)
     fetchAndSetUserData(user)
+    console.log(user)
   } else {
     setupUI()
   }
@@ -24,6 +25,7 @@ const logUserIn = (e) => {
     .signInWithEmailAndPassword(email, password)
     .then((cred) => {
       loginModal.hide()
+
       window.location.reload()
     })
     .catch((error) => {
@@ -33,6 +35,7 @@ const logUserIn = (e) => {
 
 const createUser = (e) => {
   e.preventDefault()
+  const userName = nameInput.value
   const userEmail = emailInput.value
   const userPassword = passwordInput.value
   const confirmUserPassword = confirmPasswordInput.value
@@ -41,13 +44,15 @@ const createUser = (e) => {
     alert.innerHTML = `<h6 class="alert-warning p-3"> Make sure your passwords match! </h6>`
   } else {
     auth.createUserWithEmailAndPassword(userEmail, userPassword).then(
-      (userCredential) => {
-        const user = userCredential.user
+      (cred) => {
+        cred.user.updateProfile({
+          displayName: userName,
+        })
         const docData = {
           perfumes: [],
         }
         /* prettier-ignore */
-        return usersCollection.doc(user.uid).set(docData)
+        return usersCollection.doc(cred.user.uid).set(docData)
           .then(() => {
             registerModal.hide()
             window.location.reload()
