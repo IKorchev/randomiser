@@ -77,14 +77,15 @@
             <div class="alert alert-danger display-none loginAlert my-3">
               <h6 class="py-0">Couldn't match a user with <br> this email and password</h6>
             </div>
-            <input type="submit" value="Log in" class="btn btn-primary my-3">
+            <div class="d-flex flex-column">
+              <input type="submit" value="Log in" class="btn btn-primary my-3">
+              <a class="password-reset my-2">Click here to reset password</a>
+              <div class="password-reset-alert"></div>
+            </div>
           </form>
       </div>
     </div>
   </div>
-
-  
-
       <!-- Register Modal -->
   <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -108,7 +109,7 @@
                   <label for="confirmPassword">Confirm Password</label>
                 </div>
                 <input type="submit" value="Register" class="btn btn-primary my-3">
-                <div class="alert" role="alert">
+                <div class="registrationAlert" role="alert">
                 </div>
             </form> 
         </div>
@@ -122,9 +123,7 @@
           <h1 class="modal-title">Account</h1>
           <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body account-info">
-
-        </div>
+        <div class="modal-body account-info"></div>
       </div>
     </div>
   </div>

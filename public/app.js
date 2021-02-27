@@ -196,6 +196,7 @@ const fetchAndSetUserData = async (user) => {
         perfumes.innerHTML = html
       } else {
         perfumes.innerHTML = `<h3 class="w-50">Your list is empty please add items to your collection</h3>`
+        fragAmount.textContent = ""
       }
     })
   }
