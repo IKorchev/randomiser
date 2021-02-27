@@ -1,25 +1,19 @@
-const registerForm = document.querySelector(".registerForm")
-const loginForm = document.querySelector(".loginForm")
-const formContainer = document.querySelector(".formContainer")
-const logoutButton = document.querySelector(".logout")
-const loginAlert = document.querySelector(".loginAlert")
-const modal = document.querySelector(".modal")
 const auth = firebase.auth()
 
 auth.onAuthStateChanged((user) => {
   if (user) {
     setupUI(user)
+    setUserInfo(user)
+    fetchAndSetUserData(user)
   } else {
     setupUI()
   }
 })
 
+
+
 const logUserOut = () => {
-  auth
-    .signOut()
-    .then(() => console.log("user logged out"))
-    .catch((err) => console.log(err))
-  window.location.reload()
+  auth.signOut()
 }
 
 const logUserIn = (e) => {
@@ -30,7 +24,7 @@ const logUserIn = (e) => {
   auth
     .signInWithEmailAndPassword(email, password)
     .then((cred) => {
-      window.location.reload()
+      loginModal.hide()
     })
     .catch((error) => {
       loginAlert.classList.remove("display-none")
@@ -54,7 +48,7 @@ const createUser = (e) => {
         .doc(user.uid)
         .set(docData)
         .then(() => {
-          window.location.reload()
+          registerModal.hide()
         })
     })
   }

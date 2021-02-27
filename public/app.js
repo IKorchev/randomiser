@@ -1,36 +1,11 @@
-
 //  SELECTORS
-const output = document.querySelector(".output")
-const perfumes = document.querySelector(".perfumes")
-const pickBtn = document.querySelector(".pick-button")
-const showBtn = document.querySelector(".show-button")
-const addBtn = document.querySelector(".add-button")
-const image1 = document.querySelector(".image1")
-const loggedInBtn = document.querySelectorAll(".logged-in")
-const loggedOutBtn = document.querySelectorAll(".logged-out")
-const searchInput = document.querySelector(".searchInput")
-const searchForm = document.querySelector(".searchForm")
-const searchImage = document.querySelector(".searchImage")
-const searchAlert = document.querySelector(".searchAlert")
-const inCollectionAlert = document.querySelector(".inCollectionAlert")
-const addedAlert = document.querySelector(".addedAlert")
+
 let arrayOfData = []
 const searchResult = {
   image_url: "",
   name: "",
 }
 
-// Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyCC_MQl3-dk3_1NfN4_jnrGHChXpyjV9Qw",
-  authDomain: "newproject-4eb07.firebaseapp.com",
-  databaseURL: "https://newproject-4eb07-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "newproject-4eb07",
-  storageBucket: "newproject-4eb07.appspot.com",
-  messagingSenderId: "868970255147",
-  appId: "1:868970255147:web:5abc85faa78b4eec41ab6e",
-}
-firebase.initializeApp(firebaseConfig)
 const store = firebase.firestore()
 const usersCollection = store.collection("USERS")
 
@@ -74,7 +49,7 @@ const searchFormSubmitHandler = async (e) => {
     searchAlert.classList.add("display-none")
     // GET THE FIRST IMAGE FROM THE ARRAY
     searchResult.image_url = arrayOfData[0]
-    searchResult.name = searchInput.value
+    searchResult.name = searchInput.value.toLowerCase()
     searchImage.src = searchResult.image_url
   } else {
     // IN CASE NO RESULT
@@ -113,7 +88,7 @@ const outputQueryData = (e) => {
         return new Promise((resolve) => setTimeout(resolve, milliseconds))
       }
 
-      const goOverAndStop = async () => {
+      ;(async (user) => {
         for (const item of perfumeList) {
           if (item.name === randomFrag.name) {
             // prettier-ignore
@@ -126,8 +101,7 @@ const outputQueryData = (e) => {
             output.innerHTML = `<h5 m-3> ${capitalize(item.name)} </h5>`
           }
         }
-      }
-      goOverAndStop()
+      })(user)
     } else {
       return
     }
@@ -179,20 +153,34 @@ const deletePerfumeFromCollection = () => {
 
 // SHOW THE LIST
 
-const displayList = (e) => {
+const showTheCollection = (e) => {
   e.preventDefault()
-  perfumes.classList.toggle("display-none")
-  auth.onAuthStateChanged((user) => {
-    if (!user) {
-      perfumes.innerHTML = `<h5>Please log in to see your list!</h5>`
-    } else {
-      usersCollection.doc(user.uid).onSnapshot((doc) => {
-        const perfumeList = doc.data().perfumes
-        let html = ""
-        if (perfumeList.length > 0) {
-          for (let i = 0; i < perfumeList.length; i++) {
-            // prettier-ignore
-            html += `
+  perfumeContainer.classList.toggle("display-none")
+}
+
+const setUserInfo = (user) => {
+  if (user) {
+    accountInfo.innerHTML = `
+      <h1 class="h4"> Account details: </h1>
+      <h2 class="h6"> Email: ${user.email} </h6>
+    `
+  } else {
+    accountInfo.innerHTML = `<p> Log in to see your details. </p>`
+  }
+}
+
+const fetchAndSetUserData = async (user) => {
+  if (!user) {
+    perfumes.innerHTML = `<h5>Please log in to see your list!</h5>`
+  } else {
+    usersCollection.doc(user.uid).onSnapshot((doc) => {
+      const perfumeList = doc.data().perfumes
+      let html = ""
+      if (perfumeList.length > 0) {
+        fragAmount.textContent = `You have ${perfumeList.length} fragrances in your collection!`
+        for (let i = 0; i < perfumeList.length; i++) {
+          // prettier-ignore
+          html += `
             <div class="card border border-2 border-dark m-2 px-0 d-flex justify-content-between" style="height:100px; width:auto;">
               <div class="row g-0 d-flex align-items-center">
                 <div class="col-auto ms-2 mt-2 d-flex justify-content-start align-items-center">
@@ -204,16 +192,14 @@ const displayList = (e) => {
                 </div>
               </div>
             </div>`
-          }
-          perfumes.innerHTML = html
-        } else {
-          perfumes.innerHTML = `<h3 class="w-50">Your list is empty please add items to your collection</h3>`
         }
-      })
-    }
-  })
+        perfumes.innerHTML = html
+      } else {
+        perfumes.innerHTML = `<h3 class="w-50">Your list is empty please add items to your collection</h3>`
+      }
+    })
+  }
 }
-
 const setupUI = (user) => {
   if (user) {
     loggedOutBtn.forEach((item) => {
@@ -234,7 +220,7 @@ const setupUI = (user) => {
 
 // EVENT LISTENERS
 // searchForm.addEventListener("submit", searchFormSubmitHandler)
-showBtn.addEventListener("click", displayList)
+showBtn.addEventListener("click", showTheCollection)
 searchForm.addEventListener("submit", searchFormSubmitHandler)
 pickBtn.addEventListener("click", outputQueryData)
 addBtn.addEventListener("click", addPerfumeToCollection)
