@@ -5,7 +5,6 @@ auth.onAuthStateChanged((user) => {
     setupUI(user)
     setUserInfo(user)
     fetchAndSetUserData(user)
-    console.log(user)
   } else {
     setupUI()
   }

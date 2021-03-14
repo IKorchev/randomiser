@@ -1,20 +1,87 @@
+:root {
+  --light: #f2d9bb;
+  --light-red: #f28066;
+  --dark-red: #f2505d;
+  --dark-blue: #011526;
+  --lighter-blue: #092b40;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+body {
+  background-color: var(--dark-blue);
+  font-family: monospace, serif;
+}
+
+.modal-content {
+  background-color: var(--dark-blue);
+  color: var(--light);
+}
+
+.modal-content button {
+  background-color: var(--dark-blue);
+  color: var(--light);
+}
+
+h1 {
+  color: var(--light);
+}
+.logo {
+  border-radius: 5px;
+  width: 200px;
+}
+
+button:not(.text-danger, .close-btn, .navbar-toggler) {
+  background-color: var(--dark-red) !important;
+  color: white !important;
+}
+button:not(.text-danger, .close-btn, .navbar-toggler):hover {
+  background-color: var(--light-red);
+}
+.text-danger {
+  background-color: var(--lighter-blue) !important;
+}
+.bi-list {
+  font-size: 50px;
+  font-weight: 900;
+  color: var(--dark-red);
+  margin: auto;
+}
 .display-none {
   display: none !important;
 }
+.btn:focus {
+  box-shadow: none;
+}
+.close-btn {
+  font-size: 1.5rem !important;
+  font-weight: 900;
+}
 
+label {
+  color: black;
+}
+
+.image1 {
+  height: 10rem;
+  max-width: fit-content;
+  border-radius: 4px !important;
+}
+img:not(.logo) {
+  filter: brightness(80%);
+}
 .searchImage {
-  width: 500px;
+  filter: brightness(60%);
+  width: 100px;
   height: auto;
 }
 
 .register-span:hover {
-  color: rgb(255, 174, 0);
+  color: var(--light-red);
 }
 
 .main-logged-out {
@@ -34,7 +101,18 @@
 .bi-trash {
   font-size: 1.4rem;
 }
-
+.card {
+  background-color: var(--lighter-blue);
+  height: 100px;
+  width: auto;
+  min-width: 250px;
+  color: var(--light);
+}
+.card-img {
+  height: 80px;
+  width: auto;
+  border-radius: 4px;
+}
 footer {
   margin-top: 250px;
 }

@@ -32,7 +32,7 @@ const searchFormSubmitHandler = async (e) => {
 
   // MAKING SURE THE USER SEARCHED FOR
   // A PERFUME OR SOMETHING RELATED
-
+  console.log(data)
   data.value.forEach((item) => {
     if (
       item.contentUrl.includes("perfume") ||
@@ -92,13 +92,12 @@ const outputQueryData = (e) => {
         for (const item of perfumeList) {
           if (item.name === randomFrag.name) {
             // prettier-ignore
-            output.innerHTML = `<h1 class="display-6 fw-bolder p-3 border border-5 rounded border-success"> ${capitalize(item.name)} </h1>`
+            output.innerHTML = `<h1 class="display-6 fw-bolder p-3"> ${capitalize(item.name)} </h1>`
             image1.src = randomFrag.image_url
             return
           } else {
             await sleep(110)
             image1.src = item.image_url
-            output.innerHTML = `<h5 m-3> ${capitalize(item.name)} </h5>`
           }
         }
       })(user)
@@ -182,10 +181,10 @@ const fetchAndSetUserData = async (user) => {
         for (let i = 0; i < perfumeList.length; i++) {
           // prettier-ignore
           html += `
-            <div class="card border border-2 border-dark m-2 px-0 d-flex justify-content-between" style="height:100px; width:auto;">
+            <div class="card m-2 px-0 d-flex justify-content-between">
               <div class="row g-0 d-flex align-items-center">
-                <div class="col-auto ms-2 mt-2 d-flex justify-content-start align-items-center">
-                  <img src="${perfumeList[i].image_url}" style="height:80px; width:auto;" alt="...">
+                <div class="col-auto ms-2 mt-2 d-flex justify-content-around align-items-center">
+                  <img src="${perfumeList[i].image_url}" class="card-img" alt="perfume">
                 </div>
                 <div class="col d-flex justify-content-end align-items-center mt-1 ms-2">
                     <h5 class="text-center mx-1 my-0 frag-title">${capitalize(perfumeList[i].name)}</h5>
