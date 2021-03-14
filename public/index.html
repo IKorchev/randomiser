@@ -1,33 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="Ivaylo Korchev">
   <meta name="keywords" content="Perfume, Fragrance, Collection, Random, ">
   <title>Perfume Collection</title>
-  <meta name="description" content="Register, add fragrances to your collection and click the button to choose a random fragrance from the collection!">
+  <meta name="description"
+    content="Register, add fragrances to your collection and click the button to choose a random fragrance from the collection!">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"  integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <link rel="stylesheet" href="./styles/styles.css">
 </head>
-<body >
+
+<body>
   <nav class="navbar navbar-expand-md">
     <div class="container-fluid ">
       <a class="navbar-brand" href="#"><img src="./assets/logo.png" class="logo" alt="logo"></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
+        aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"><i class="bi bi-list"></i></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarToggler">
         <div class="navbar-nav ms-auto mb-2 mb-lg-0 logged-in display-none">
-          <button type="button" class="btn logged-in m-2 fw-bold" data-bs-toggle="modal" data-bs-target="#accountModal"><i class="bi bi-user"></i>My account</button>
-          <button type="button" class="btn logged-in m-2 fw-bold" data-bs-toggle="modal" data-bs-target="#searchModal">Search <i class="bi bi-search"></i></button>
+          <button type="button" class="btn logged-in m-2 fw-bold" data-bs-toggle="modal"
+            data-bs-target="#accountModal"><i class="bi bi-user"></i>My account</button>
+          <button type="button" class="btn logged-in m-2 fw-bold" data-bs-toggle="modal"
+            data-bs-target="#searchModal">Search <i class="bi bi-search"></i></button>
           <button type="button" class="btn logged-in m-2 logout">Log out</button>
         </div>
-          <div class="navbar-nav ms-auto mb-2 mb-lg-0 logged-out display-none">
-            <button type="button" class="btn border border-dark my-2 logged-out mx-2 " data-bs-toggle="modal" data-bs-target="#loginModal">Log in</button>
-            <button type="button" class="btn border border-dark my-2 logged-out mx-2 " data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
-          </div>
+        <div class="navbar-nav ms-auto mb-2 mb-lg-0 logged-out display-none">
+          <button type="button" class="btn border border-dark my-2 logged-out mx-2 " data-bs-toggle="modal"
+            data-bs-target="#loginModal">Log in</button>
+          <button type="button" class="btn border border-dark my-2 logged-out mx-2 " data-bs-toggle="modal"
+            data-bs-target="#registerModal">Register</button>
+        </div>
       </div>
     </div>
   </nav>
@@ -36,96 +45,99 @@
     <div class="modal-dialog">
       <div class="modal-content text-center">
         <div class="modal-header mb-3">
-            <h3>Search for a fragrance</h3>
-            <button type="button" class="btn close-btn" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+          <h3>Search for a fragrance</h3>
+          <button type="button" class="btn close-btn" data-bs-dismiss="modal" aria-label="Close">&times;</button>
         </div>
         <form action="/search" class="searchForm input-group mb-3 w-75 mx-auto">
-            <label for="search" class="input-group-text">Search</label>
-            <input type="text" class="searchInput form-control" name="name" id="search">
-            <label for="submitButton"></label>
-            <button type="submit" class="btn border bg-light"><i class="bi bi-search"></i></button>
+          <label for="search" class="input-group-text">Search</label>
+          <input type="text" class="searchInput form-control" name="name" id="search">
+          <label for="submitButton"></label>
+          <button type="submit" class="btn search-btn"><i class="bi bi-search"></i></button>
         </form>
         <div class="modal-body">
           <div class="searchAlert alert alert-warning display-none">
-              <h6>Couldn't find any fragrances with this name!<br> Please try a different name!</h6>
+            <h6>Couldn't find any fragrances with this name!<br> Please try a different name!</h6>
           </div>
           <div class="addedAlert alert-success my-3 alert display-none">
             <h6>Item added to your collection!</h6>
           </div>
           <img class="searchImage mb-3" src="" />
-            <div>
-              <button class="btn add-button my-2">Add to collection</button>
-            </div>
-        <div class="inCollectionAlert alert-warning my-3 alert display-none">
-          <h6>You already have this in your collection</h6>
-        </div>
+          <div>
+            <button class="btn add-button my-2">Add to collection</button>
+          </div>
+          <div class="inCollectionAlert alert-warning my-3 alert display-none">
+            <h6>You already have this in your collection</h6>
           </div>
         </div>
+      </div>
     </div>
   </div>
-      <!-- Log in Modal -->
+  <!-- Log in Modal -->
   <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content text-center">
         <div class="modal-header">
-            <h1 class="modal-title">Log in</h1>
-            <button type="button" class="btn close-btn" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+          <h1 class="modal-title">Log in</h1>
+          <button type="button" class="btn close-btn" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+        </div>
+        <form class="form my-3 loginForm w-75 mx-auto">
+          <div class="form-floating my-4">
+            <input class="form-control box mx-auto" type="email" required id="loginEmail" placeholder="Your email" />
+            <label for="loginEmail">Email</label>
           </div>
-          <form class="form my-3 loginForm w-75 mx-auto">
-            <div class="form-floating my-4">
-              <input class="form-control box mx-auto" type="email" required id="loginEmail" placeholder="Your email" />
-              <label for="loginEmail">Email</label>
-            </div>
-            <div class="form-floating">
-              <input class="form-control box mx-auto" type="password" required id="loginPassword" placeholder="Password" />
-              <label for="loginPassword">Password</label>
-            </div>
-            <div class="alert alert-danger display-none loginAlert my-3">
-              <h6 class="py-0">Couldn't match a user with <br> this email and password</h6>
-            </div>
-            <div class="d-flex flex-column">
-              <button type="submit" value="Log in" class="btn my-3">Log in</button>
-              <a class="password-reset my-2">Click here to reset password</a>
-              <div class="password-reset-alert"></div>
-            </div>
-          </form>
+          <div class="form-floating">
+            <input class="form-control box mx-auto" type="password" required id="loginPassword"
+              placeholder="Password" />
+            <label for="loginPassword">Password</label>
+          </div>
+          <div class="alert alert-danger display-none loginAlert my-3">
+            <h6 class="py-0">Couldn't match a user with <br> this email and password</h6>
+          </div>
+          <div class="d-flex flex-column">
+            <button type="submit" value="Log in" class="btn my-3">Log in</button>
+            <a class="password-reset-btn my-2">Click here to reset password</a>
+            <div class="password-reset-alert"></div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-      <!-- Register Modal -->
+  <!-- Register Modal -->
   <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-          <div class="modal-header mx-3">
-            <h1>Register</h1>
+        <div class="modal-header mx-3">
+          <h1>Register</h1>
           <button type="button" class="btn close-btn" data-bs-dismiss="modal" aria-label="Close">&times;</button>
         </div>
         <div class="modal-body text-center">
-            <form class="form registerForm mt-5">
-              <div class="form-floating mb-3">
-                <input class="form-control box mx-auto" type="text" required id="name" placeholder="Name" />
-                <label for="name">Name</label>
-              </div>
-                <div class="form-floating mb-3">
-                  <input class="form-control box mx-auto" type="email" required id="email" placeholder="Email" />
-                  <label for="email">Email</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <input class="form-control box mx-auto" type="password" required id="password" placeholder="Password" />
-                  <label for="password">Password</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <input class="form-control box mx-auto" type="password" required id="confirmPassword" placeholder="Confirm password" />
-                  <label for="confirmPassword">Confirm Password</label>
-                </div>
-                <input type="submit" value="Register" class="btn my-3">
-                <div class="registrationAlert" role="alert">
-                </div>
-            </form> 
+          <form class="form registerForm mt-5">
+            <div class="form-floating mb-3">
+              <input class="form-control box mx-auto" type="text" required id="name" placeholder="Name" />
+              <label for="name">Name</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input class="form-control box mx-auto" type="email" required id="email" placeholder="Email" />
+              <label for="email">Email</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input class="form-control box mx-auto" type="password" required id="password" placeholder="Password" />
+              <label for="password">Password</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input class="form-control box mx-auto" type="password" required id="confirmPassword"
+                placeholder="Confirm password" />
+              <label for="confirmPassword">Confirm Password</label>
+            </div>
+            <button type="submit" class="btn my-3">Register</button>
+            <div class="registrationAlert" role="alert">
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
+  <!-- ACCOUNT MODAL -->
   <div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content text-center">
@@ -137,45 +149,51 @@
       </div>
     </div>
   </div>
-  <main class="container text-center d-flex flex-column justify-content-center align-items-center main-content logged-in display-none">
-    <h1 class="display-6 mt-5 rounded fw-bold" >Fragrance Picker</h1>
+  <!-- MAIN CONTENT -->
+  <main
+    class="container text-center d-flex flex-column justify-content-center align-items-center main-content logged-in display-none">
+    <h1 class="display-6 mt-5 rounded fw-bold">Fragrance Picker</h1>
     <div class="d-flex justify-content-center align-items-center">
-        <img class="mx-auto image1" src="https://whataftercollege.com/wp-content/uploads/2019/12/wac-down-arrow-gif-2.gif"></img>
+      <img class="mx-auto image1" src="./assets/down_arrow.gif"></img>
     </div>
-      
-      <div class="output mt-3"></div>
-      <button class="btn btn-md my-3 pick-button">Pick fragrance</button><br>
-      <button class="btn btn-md mb-4 show-button"><i class="bi bi-collection"></i> Collection</button>
-      <div class="display-none perfume-container">
+    <div class="output mt-3"></div>
+    <button class="btn btn-md my-3 pick-button">Pick fragrance</button><br>
+    <button class="btn btn-md mb-4 show-button"><i class="bi bi-collection"></i> Collection</button>
+    <div class="display-none perfume-container">
       <h1 class="h4 frag-amount"></h1>
       <div class="container perfumes row align-items-center justify-content-center mb-5">
       </div>
       <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#searchModal">Add perfume</button>
     </div>
   </main>
-
-  <div class="d-flex text-center flex-column justify-content-center align-items-center main-logged-out logged-out display-none text-white">
-    <h1 class="display-4">Not sure what to wear?</h1>
+  <div
+    class="d-flex text-center flex-column justify-content-center align-items-center main-logged-out logged-out display-none text-white">
+    <h1 class="display-4 mb-5">My Fragrance Collection</h1>
     <h5>
-      <span type="button" class="logged-out register-span" data-bs-toggle="modal" data-bs-target="#registerModal">Register</span>
-      add perfumes to your collection and click the button!
+      <span type="button" class="logged-out register-span" data-bs-toggle="modal"
+        data-bs-target="#registerModal">Register</span>
+      and add fragrances to your collection!
     </h5>
-    <div class="d-flex align-items-center">    
+    <div class="d-flex align-items-center">
       <h6 class="mt-2">Already have an account?</h6>
-      <button type="button" class="btn my-2 logged-out mx-3" data-bs-toggle="modal" data-bs-target="#loginModal">Log in</button>
+      <button type="button" class="btn my-2 logged-out mx-3" data-bs-toggle="modal" data-bs-target="#loginModal">Log
+        in</button>
     </div>
   </div>
   <footer class="container text-center text-muted logged-in logged-out display-none">
     <p>Copyright &copy; 2020 <br> Ivaylo Korchev </p>
   </footer>
-<script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-auth.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-<script src="selectors.js"></script>
-<script src="firebase.js"></script>
-<script src="app.js"></script>
-<script src="auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+    crossorigin="anonymous"></script>
+  <script src="selectors.js"></script>
+  <script src="firebase.js"></script>
+  <script src="app.js"></script>
+  <script src="auth.js"></script>
 
 </body>
+
 </html>

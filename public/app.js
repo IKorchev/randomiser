@@ -188,7 +188,7 @@ const fetchAndSetUserData = async (user) => {
                 </div>
                 <div class="col d-flex justify-content-end align-items-center mt-1 ms-2">
                     <h5 class="text-center mx-1 my-0 frag-title">${capitalize(perfumeList[i].name)}</h5>
-                    <button type="button" class="mx-1 p-1 btn text-danger" onClick="deletePerfumeFromCollection()"><i class="bi bi-trash"></i></button>
+                    <button type="button" class="mx-1 p-1 btn delete-btn" onClick="deletePerfumeFromCollection()"><i class="bi bi-trash"></i></button>
                 </div>
               </div>
             </div>`
