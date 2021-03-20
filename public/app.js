@@ -1,7 +1,7 @@
 //  SELECTORS
-
+let index = 0
 let arrayOfData = []
-const searchResult = {
+let searchResult = {
   image_url: "",
   name: "",
 }
@@ -15,24 +15,24 @@ const randomInt = (num) => {
   let randomNum = Math.floor(Math.random() * num)
   return randomNum
 }
-
 // prettier-ignore
-
-const capitalize = (str) => str.toLowerCase().split(" ").map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(" ")
-
 const searchFormSubmitHandler = async (e) => {
   e.preventDefault()
-  addedAlert.classList.add("display-none")
+  // clear the alerts if there were any
+  searchAlert.classList.add("display-none")
+  addedAlert.classList.add("display-none") 
+  inCollectionAlert.classList.add("display-none")
+  searchImage.src = ""
+  arrayOfData = [] // CLEAR ARRAY
+  index = 0 // always start from the first item of the array
 
   // MAKE A CALL TO THE SERVER ( SERVER MAKES THE API REQUEST AND GIVES BACK DATA TO CLIENT )
-
-  const name = searchInput.value
-  const response = await fetch(`search/${name}`)
+  try {
+  const response = await fetch(`search/${searchInput.value}`)
   const data = await response.json()
-
+  console.log(data)
   // MAKING SURE THE USER SEARCHED FOR
   // A PERFUME OR SOMETHING RELATED
-  console.log(data)
   data.value.forEach((item) => {
     if (
       item.contentUrl.includes("perfume") ||
@@ -40,25 +40,30 @@ const searchFormSubmitHandler = async (e) => {
       item.contentUrl.includes("fragrance")
     ) {
       arrayOfData.push(item.contentUrl)
-    } else {
-      return
     }
   })
   // IF THERE IS ANY RESULT
   if (arrayOfData.length > 0) {
-    searchAlert.classList.add("display-none")
     // GET THE FIRST IMAGE FROM THE ARRAY
-    searchResult.image_url = arrayOfData[0]
     searchResult.name = searchInput.value.toLowerCase()
-    searchImage.src = searchResult.image_url
+    searchImage.src = arrayOfData[index]
+    searchResult.image_url = searchImage.src
+    previousAndNextImageButton.classList.remove('display-none')
   } else {
     // IN CASE NO RESULT
-    searchAlert.classList.remove("display-none")
-    searchImage.src = ""
+    previousAndNextImageButton.classList.add('display-none')
+    showAlert(searchAlert, 3500)
+    searchResult = {
+      image_url: "",
+      name: "",
+    }
   }
-  inCollectionAlert.classList.add("display-none")
+} catch(err) {
+  console.log(err)
+} finally {
   searchForm.reset()
-  arrayOfData = []
+  
+}
 }
 
 // CHECK IF THE ITEM THEY TRY TO ADD ALREADY EXISTS IN THE USER'S DATABASE
@@ -82,7 +87,7 @@ const outputQueryData = (e) => {
       const perfumeList = await doc.data().perfumes
       const randomFrag = perfumeList[randomInt(perfumeList.length)]
 
-      // MAKE A DELAY BETWEEN EACH ITTERATION OF THE LOOP SO EVERY IMAGE SHOWS FOR A BRIEF MOMENT FOR A UI EFFECT
+      // MAKE A DELAY BETWEEN EACH ITTERATION OF THE LOOP SO EVERY IMAGE SHOWS FOR A BRIEF MOMENT
 
       const sleep = (milliseconds) => {
         return new Promise((resolve) => setTimeout(resolve, milliseconds))
@@ -92,7 +97,7 @@ const outputQueryData = (e) => {
         for (const item of perfumeList) {
           if (item.name === randomFrag.name) {
             // prettier-ignore
-            output.innerHTML = `<h1 class="display-6 fw-bolder p-3"> ${capitalize(item.name)} </h1>`
+            output.innerHTML = `<h1 class="display-6 fw-bolder p-3"> ${item.name} </h1>`
             image1.src = randomFrag.image_url
             return
           } else {
@@ -119,9 +124,9 @@ const addPerfumeToCollection = (e) => {
         perfumes: firebase.firestore.FieldValue.arrayUnion(searchResult),
       })
       searchImage.src = ""
-      addedAlert.classList.remove("display-none")
+      showAlert(addedAlert, 2000)
     } else {
-      inCollectionAlert.classList.remove("display-none")
+      showAlert(inCollectionAlert, 3000)
     }
   })
 }
@@ -178,7 +183,7 @@ const fetchAndSetUserData = async (user) => {
       let html = ""
       if (perfumeList.length > 0) {
         fragAmount.textContent = `You have ${perfumeList.length} fragrances in your collection!`
-        for (let i = 0; i < perfumeList.length; i++) {
+        for (let i = perfumeList.length - 1; i >= 0; i--) {
           // prettier-ignore
           html += `
             <div class="card m-2 px-0 d-flex justify-content-between">
@@ -187,7 +192,7 @@ const fetchAndSetUserData = async (user) => {
                   <img src="${perfumeList[i].image_url}" class="card-img" alt="perfume">
                 </div>
                 <div class="col d-flex justify-content-end align-items-center mt-1 ms-2">
-                    <h5 class="text-center mx-1 my-0 frag-title">${capitalize(perfumeList[i].name)}</h5>
+                    <h5 class="text-center mx-1 my-0 frag-title">${perfumeList[i].name}</h5>
                     <button type="button" class="mx-1 p-1 btn delete-btn" onClick="deletePerfumeFromCollection()"><i class="bi bi-trash"></i></button>
                 </div>
               </div>
@@ -201,6 +206,7 @@ const fetchAndSetUserData = async (user) => {
     })
   }
 }
+
 const setupUI = (user) => {
   if (user) {
     loggedOutBtn.forEach((item) => {
@@ -219,9 +225,40 @@ const setupUI = (user) => {
   }
 }
 
+// GET AND DISPLAY THE PREVIOUS IMAGE
+
+const getPreviousImage = (e) => {
+  e.preventDefault()
+  if (index > 0) {
+    index--
+    searchImage.src = arrayOfData[index]
+    searchResult.image_url = searchImage.src
+  }
+}
+
+// GET AND DISPLAY THE NEXT IMAGE
+
+const getNextImage = (e) => {
+  e.preventDefault()
+  if (index < arrayOfData.length - 1) {
+    index++
+    searchImage.src = arrayOfData[index]
+    searchResult.image_url = searchImage.src
+  }
+  searchResult.image_url = searchImage.src
+}
+
+const showAlert = (selector, milliseconds) => {
+  selector.classList.remove("display-none")
+  setTimeout(() => {
+    selector.classList.add("display-none")
+  }, milliseconds)
+}
+
 // EVENT LISTENERS
-// searchForm.addEventListener("submit", searchFormSubmitHandler)
 showBtn.addEventListener("click", showTheCollection)
 searchForm.addEventListener("submit", searchFormSubmitHandler)
 pickBtn.addEventListener("click", outputQueryData)
 addBtn.addEventListener("click", addPerfumeToCollection)
+previous.addEventListener("click", getPreviousImage)
+next.addEventListener("click", getNextImage)

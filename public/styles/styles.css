@@ -53,12 +53,20 @@ button:not(.text-danger, .close-btn, .navbar-toggler):hover {
 .password-reset-btn {
   cursor: pointer;
 }
-
+.image-navigation .bi {
+  background-color: var(--dark-blue);
+  color: var(--light);
+  padding: 10px;
+  cursor: pointer;
+}
 .register-span {
   color: var(--light-red);
 }
 .register-span:hover {
   color: var(--light);
+}
+.frag-title {
+  text-transform: capitalize;
 }
 .navbar-toggler {
   padding: 0.5rem;
@@ -84,8 +92,8 @@ img:not(.logo) {
 }
 .searchImage {
   filter: brightness(60%);
-  width: 100px;
-  height: auto;
+  width: auto;
+  height: 200px;
 }
 .logo {
   border-radius: 5px;

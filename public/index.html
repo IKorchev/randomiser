@@ -58,19 +58,23 @@
           <div class="searchAlert alert alert-warning display-none">
             <h6>Couldn't find any fragrances with this name!<br> Please try a different name!</h6>
           </div>
+          <div class="inCollectionAlert alert-warning my-3 alert display-none">
+            <h6>You already have this in your collection</h6>
+          </div>
           <div class="addedAlert alert-success my-3 alert display-none">
             <h6>Item added to your collection!</h6>
           </div>
           <img class="searchImage mb-3" src="" />
-          <div>
-            <button class="btn add-button my-2">Add to collection</button>
+          <div class="image-navigation display-none">
+            <a class="previous-image"><i class="bi bi-arrow-left-circle"></i></a>
+            <a class="next-image"><i class="bi bi-arrow-right-circle"></i></a>
           </div>
-          <div class="inCollectionAlert alert-warning my-3 alert display-none">
-            <h6>You already have this in your collection</h6>
-          </div>
+          <button class="btn add-button my-2">Add to collection</button>
         </div>
+
       </div>
     </div>
+  </div>
   </div>
   <!-- Log in Modal -->
   <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -156,7 +160,7 @@
     <div class="d-flex justify-content-center align-items-center">
       <img class="mx-auto image1" src="./assets/down_arrow.gif"></img>
     </div>
-    <div class="output mt-3"></div>
+    <div class="output mt-3 frag-title"></div>
     <button class="btn btn-md my-3 pick-button">Pick fragrance</button><br>
     <button class="btn btn-md mb-4 show-button"><i class="bi bi-collection"></i> Collection</button>
     <div class="display-none perfume-container">
